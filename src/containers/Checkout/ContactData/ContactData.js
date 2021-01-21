@@ -49,21 +49,21 @@ class ContactData extends Component {
             });
     }
 
-    
+
 
     render() {
-        let form=(
+        let form = (
             <form>
-                    <input className={classes.Input} type="text" name="name" placeholder="Your Name" />
-                    <input className={classes.Input} type="email" name="email" placeholder="Your Email" />
-                    <input className={classes.Input} type="text" name="street" placeholder="Street" />
-                    <input className={classes.Input} type="text" name="postalCode" placeholder="Postal Code" />
-                    <Button btnType="Success" clicked={this.orderHandler}>ORDER NOW</Button>
-                </form>
+                <input className={classes.Input} type="text" name="name" placeholder="Your Name" />
+                <input className={classes.Input} type="email" name="email" placeholder="Your Email" />
+                <input className={classes.Input} type="text" name="street" placeholder="Street" />
+                <input className={classes.Input} type="text" name="postalCode" placeholder="Postal Code" />
+                <Button btnType="Success" clicked={this.orderHandler}>ORDER NOW</Button>
+            </form>
         );
 
-        if(this.state.loading){
-            form=<Spinner/>;
+        if (this.state.loading) {
+            form = <Spinner />;
         }
 
         return (
