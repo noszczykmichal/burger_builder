@@ -65,6 +65,15 @@ class ContactData extends Component {
                     ]
                 },
                 value: ''
+            },
+
+            consent: {
+                elementType: 'input_checkbox',
+                elementConfig: {
+                    type: 'checkbox',
+                    value: 'consentGranted',
+                },
+                label: 'I agree for the processing of my personal data.'
             }
         },
         loading: false
@@ -91,7 +100,20 @@ class ContactData extends Component {
             });
     }
 
+    inputChangedHandler = (event, inputIdentifier) => {
+        const updatedOrderForm = {
+            ...this.state.orderForm
+        };
 
+        const updatedFormElement = {
+            ...updatedOrderForm[inputIdentifier]
+        };
+
+        updatedFormElement.value=event.target.value;
+
+        updatedOrderForm[inputIdentifier]=updatedFormElement;
+        this.setState({orderForm: updatedOrderForm});
+    }
 
     render() {
 
@@ -109,23 +131,16 @@ class ContactData extends Component {
         let form = (
             <form>
                 {formElementsArray.map(element => (
-                    <Input key={element.id} 
-                    elementType={element.config['elementType']} 
-                    elementConfig={element.config['elementConfig']} 
-                    value={element.config['value']}/>
+                    <Input key={element.id}
+                        elementType={element.config['elementType']}
+                        elementConfig={element.config['elementConfig']}
+                        value={element.config['value']}
+                        label={element.config['label']}
+                        changed={(event) => this.inputChangedHandler(event, element.id)} />
                 ))}
+                <Button btnType="Success" clicked={this.orderHandler}>ORDER</Button>
             </form>
         )
-
-
-        //     // <form>
-        //     <Input elementType="..." elementConfig="..." value="..."/>
-        //     <Input inputtype="input" type="email" name="email" placeholder="Your Email" />
-        //     <Input inputtype="input" type="text" name="street" placeholder="Street" />
-        //     <Input inputtype="input" type="text" name="postalCode" placeholder="Postal Code" />
-        //     <Button btnType="Success" clicked={this.orderHandler}>ORDER NOW</Button>
-        // </form>
-        // );
 
         if (this.state.loading) {
             form = <Spinner />;
