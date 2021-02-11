@@ -8,6 +8,8 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import axios from '../../axios-orders';
 
+import { connect } from 'react-redux';
+
 const INGREDIENT_PRICES = {
     salad: 0.5,
     cheese: 0.4,
@@ -33,8 +35,8 @@ class BurgerBuilder extends Component {
             .then(response => {
                 this.setState({ ingredients: response.data });
             })
-            .catch(error=>{
-                this.setState({error: true});
+            .catch(error => {
+                this.setState({ error: true });
             });
     }
 
@@ -104,19 +106,19 @@ class BurgerBuilder extends Component {
 
     purchaseContinueHandler = () => {
 
-        const queryParams=[];
+        const queryParams = [];
 
-        for(let ingrid in this.state.ingredients){
-            queryParams.push(encodeURIComponent(ingrid)+'='+encodeURIComponent(this.state.ingredients[ingrid]));
+        for (let ingrid in this.state.ingredients) {
+            queryParams.push(encodeURIComponent(ingrid) + '=' + encodeURIComponent(this.state.ingredients[ingrid]));
         }
 
-        queryParams.push('price='+this.state.totalPrice);
+        queryParams.push('price=' + this.state.totalPrice);
 
-        const queryString=queryParams.join('&');
+        const queryString = queryParams.join('&');
 
         this.props.history.push({
             pathname: '/checkout',
-            search: '?'+queryString
+            search: '?' + queryString
         });
     }
 
@@ -130,7 +132,7 @@ class BurgerBuilder extends Component {
         }
 
         let orderSummary = null;
-        let burger = this.state.error? <p>Ingredients can't be loaded</p> : <Spinner />;
+        let burger = this.state.error ? <p>Ingredients can't be loaded</p> : <Spinner />;
 
         if (this.state.ingredients) {
             burger = (
@@ -169,4 +171,18 @@ class BurgerBuilder extends Component {
     }
 }
 
-export default withErrorHandler(BurgerBuilder, axios);
+const mapStateToProps = state => {
+    return {
+
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+
+    };
+};
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));
