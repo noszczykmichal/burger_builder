@@ -39,52 +39,9 @@ const reducer = (state = initialState, action) => {
                 },
                 totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName]
             };
-        // this.updatePurchaseState(updatedIngredients);
         default:
             return state;
     }
 };
 
 export default reducer
-
-
-            // addIngredientHandler = (type) => {
-            //     const oldCount = this.state.ingredients[type];
-            //     const updatedCount = oldCount + 1;
-
-            //     const updatedIngredients = {
-            //         ...this.state.ingredients
-            //     }
-
-            //     updatedIngredients[type] = updatedCount;
-
-            //     const priceAddition = INGREDIENT_PRICES[type];
-            //     const oldPrice = this.state.totalPrice;
-            //     const newPrice = oldPrice + priceAddition;
-
-            //     this.setState({ ingredients: updatedIngredients, totalPrice: newPrice });
-
-            //     this.updatePurchaseState(updatedIngredients);
-            // }
-
-            // removeIngredientHandler = (type) => {
-    //     const oldCount = this.state.ingredients[type];
-
-    //     if (oldCount <= 0) {
-    //         return;
-    //     }
-
-    //     const updatedCount = oldCount - 1;
-    //     const priceDeduction = INGREDIENT_PRICES[type];
-    //     const oldPrice = this.state.totalPrice;
-
-    //     const newPrice = oldPrice - priceDeduction;
-    //     const updatedIngredients = {
-    //         ...this.state.ingredients
-    //     }
-
-    //     updatedIngredients[type] = updatedCount;
-
-    //     this.setState({ ingredients: updatedIngredients, totalPrice: newPrice });
-    //     this.updatePurchaseState(updatedIngredients);
-    // }

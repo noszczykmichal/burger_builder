@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import axios from '../../../axios-orders';
+import { connect } from 'react-redux';
 
 import Button from '../../../components/UI/Button/Button';
 import classes from './ContactData.module.css';
 import Spinner from '../../../components/UI/Spinner/Spinner';
+import axios from '../../../axios-orders';
 import Input from '../../../components/UI/Input/Input';
 
 class ContactData extends Component {
@@ -131,7 +132,7 @@ class ContactData extends Component {
         // console.log(formData);
 
         const order = {
-            ingredients: this.props.ingredients,
+            ingredients: this.props.ings,
             price: this.props.price,
             orderData: formData
         }
@@ -165,8 +166,8 @@ class ContactData extends Component {
         return isValid;
     }
 
-    checkIfMarked(marked, rules){
-        return marked && rules.required? true : false;
+    checkIfMarked(marked, rules) {
+        return marked && rules.required ? true : false;
     }
 
     inputChangedHandler = (event, inputIdentifier) => {
@@ -181,23 +182,23 @@ class ContactData extends Component {
 
         if (inputIdentifier === 'consent') {
             let isChecked = updatedFormElement.checked;
-            updatedFormElement.checked =!isChecked;
-            updatedFormElement.valid=this.checkIfMarked(updatedFormElement.checked, updatedFormElement.validation);
+            updatedFormElement.checked = !isChecked;
+            updatedFormElement.valid = this.checkIfMarked(updatedFormElement.checked, updatedFormElement.validation);
         } else {
             updatedFormElement.value = event.target.value;
-            updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation) 
+            updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation)
         }
 
-        updatedFormElement.touched=true;
+        updatedFormElement.touched = true;
         updatedOrderForm[inputIdentifier] = updatedFormElement;
-        
-        let formIsValid=true;
 
-        for(let inputIdentifier in updatedOrderForm){
-           if(updatedOrderForm[inputIdentifier].valid!==undefined){
-            formIsValid=updatedOrderForm[inputIdentifier].valid && formIsValid;
-           }
-        }  
+        let formIsValid = true;
+
+        for (let inputIdentifier in updatedOrderForm) {
+            if (updatedOrderForm[inputIdentifier].valid !== undefined) {
+                formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid;
+            }
+        }
 
         this.setState({ orderForm: updatedOrderForm, formIsValid: formIsValid });
     }
@@ -246,4 +247,11 @@ class ContactData extends Component {
     }
 }
 
-export default ContactData;
+const mapStateToProps= state=>{
+    return{
+        ings: state.ingredients,
+        price: state.totalPrice
+    }
+}
+
+export default connect(mapStateToProps)(ContactData);
