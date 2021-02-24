@@ -1,15 +1,31 @@
-// import * as actionTypes from '../actions/actionTypes';
+import * as actionTypes from '../actions/actionTypes';
+
+const initialState = {
+       loading: false
+}
+
+const orderReducer = (state = initialState, action) => {
+       switch (action.type) {
+              case actionTypes.TRYING_TO_ORDER:
+                     return{
+                            ...state,
+                            loading: true
+                     };
+              case actionTypes.PURCHASE_BURGER_SUCCESS:
+                     return{
+                            ...state,
+                            loading: false
+                     };
+              case actionTypes.PURCHASE_BURGER_FAIL:
+                     return{
+                            ...state,
+                            loading: false
+                     };
+              default:
+                     return state; 
+       }
+}
 
 
 
-
-
- // console.log('this props: ',this.props);
-
-        // axios.get('https://react-burger-builder-c365e-default-rtdb.europe-west1.firebasedatabase.app/ingredients.json')
-        //     .then(response => {
-        //         this.setState({ ingredients: response.data });
-        //     })
-        //     .catch(error => {
-        //         this.setState({ error: true });
-        //     });
+export default orderReducer;
