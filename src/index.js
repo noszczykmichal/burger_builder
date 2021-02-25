@@ -13,7 +13,7 @@ import thunk from 'redux-thunk';
 
 
 const rootReducer = combineReducers({
-  burgerBuild: burgerBuilderReducer,
+  burgerBuilder: burgerBuilderReducer,
   order: orderReducer
 });
 

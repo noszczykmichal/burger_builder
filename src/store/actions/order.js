@@ -2,36 +2,45 @@ import * as actionTypes from './actionTypes';
 import axios from '../../axios-orders';
 
 
-export const purchaseSucceeded = () => {
+export const purchaseBurgerSuccess = (id, orderData) => {
     return {
-        type: actionTypes.PURCHASE_BURGER_SUCCESS
+        type: actionTypes.PURCHASE_BURGER_SUCCESS,
+        orderId: id,
+        orderData: orderData
     };
 };
 
-export const purchaseFailed = () => {
+export const purchaseBurgerFail = (error) => {
     return {
-        type: actionTypes.PURCHASE_BURGER_FAIL
+        type: actionTypes.PURCHASE_BURGER_FAIL,
+        error: error
     };
 };
 
+export const purchaseBurgerStart = () => {
+    return {
+        type: actionTypes.PURCHASE_BURGER_START
+    };
+};
 
-export const purchaseBurgerSuccess = (order) => {
+export const purchaseBurger = (orderData) => {
     return dispatch => {
-        axios.post('/orders.json', order)
+        dispatch(purchaseBurgerStart());
+
+        axios.post('/orders.json', orderData)
             .then(response => {
-                // this.setState({ loading: false });
-                // this.props.history.push('/');
-                dispatch(purchaseSucceeded());
+
+                dispatch(purchaseBurgerSuccess(response.data.name, orderData));
             })
             .catch(error => {
-                // this.setState({ loading: false });
-                dispatch(purchaseFailed());
+
+                dispatch(purchaseBurgerFail(error));
             });
     };
 };
 
-export const tryIngToOrder = () => {
+export const purchaseInit = () => {
     return {
-        type: actionTypes.TRYING_TO_ORDER
+        type: actionTypes.PURCHASE_INIT
     };
 };

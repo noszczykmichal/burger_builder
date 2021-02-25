@@ -16,6 +16,7 @@ class Orders extends Component {
             .then(response => {
                 this.setState({ loading: false });
 
+                console.log('response.data: ', response.data)
                 const fetchedOrders = [];
 
                 for (let key in response.data) {
@@ -26,6 +27,8 @@ class Orders extends Component {
                         id: key
                     });
                 }
+                console.log('fetchedOrders: ', fetchedOrders);
+
                 this.setState({ loading: false, orders: fetchedOrders });
             })
             .catch(error => {
