@@ -32,42 +32,30 @@ const orderReducer = (state = initialState, action) => {
                             loading: false,
                             purchased: true
                      };
-              case actionTypes.FETCH_ORDERS_START:
-                     return {
-                            ...state,
-                            loading: true
-                     };
               case actionTypes.PURCHASE_BURGER_FAIL:
                      return {
                             ...state,
                             loading: false
                      };
-              case actionTypes.FETCH_ORDERS_SUCCESS:
-                     // console.log('FETCH_ORDERS_SUCCESS: ', action.orders)
-                     const fetchedOrders = [];
 
-                     for (let key in action.orders) {
-                            // console.log(action.orders[key]);
-
-                            fetchedOrders.push({
-                                   ...action.orders[key],
-                                   id: key
-                            });
-                     }
-                     // console.log('fetchedOrders: ', fetchedOrders);
-
+              case actionTypes.FETCH_ORDERS_START:
                      return {
                             ...state,
-                            orders: fetchedOrders,
+                            loading: true
+                     };
+
+              case actionTypes.FETCH_ORDERS_SUCCESS:
+                     return {
+                            ...state,
+                            orders: action.orders,
                             loading: false
                      };
 
               case actionTypes.FETCH_ORDERS_FAIL:
                      return {
                             ...state,
-                            error: action.error,
                             loading: false
-                     }
+                     };
 
               default:
                      return state;
