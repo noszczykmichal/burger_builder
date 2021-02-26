@@ -9,38 +9,70 @@ const initialState = {
 const orderReducer = (state = initialState, action) => {
        switch (action.type) {
               case actionTypes.PURCHASE_INIT:
-                     return{
+                     return {
                             ...state,
                             purchased: false
                      };
+
               case actionTypes.PURCHASE_BURGER_START:
-                     return{
+                     return {
                             ...state,
                             loading: true
                      };
 
               case actionTypes.PURCHASE_BURGER_SUCCESS:
-                     const newOrder={
+                     const newOrder = {
                             ...action.orderData,
                             id: action.orderId
                      };
 
-                     return{
+                     return {
                             ...state,
                             orders: state.orders.concat(newOrder),
                             loading: false,
                             purchased: true
                      };
+              case actionTypes.FETCH_ORDERS_START:
+                     return {
+                            ...state,
+                            loading: true
+                     };
               case actionTypes.PURCHASE_BURGER_FAIL:
-                     return{
+                     return {
                             ...state,
                             loading: false
                      };
+              case actionTypes.FETCH_ORDERS_SUCCESS:
+                     // console.log('FETCH_ORDERS_SUCCESS: ', action.orders)
+                     const fetchedOrders = [];
+
+                     for (let key in action.orders) {
+                            // console.log(action.orders[key]);
+
+                            fetchedOrders.push({
+                                   ...action.orders[key],
+                                   id: key
+                            });
+                     }
+                     // console.log('fetchedOrders: ', fetchedOrders);
+
+                     return {
+                            ...state,
+                            orders: fetchedOrders,
+                            loading: false
+                     };
+
+              case actionTypes.FETCH_ORDERS_FAIL:
+                     return {
+                            ...state,
+                            error: action.error,
+                            loading: false
+                     }
+
               default:
-                     return state; 
+                     return state;
        }
 };
-
 
 
 export default orderReducer;
