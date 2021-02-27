@@ -68,7 +68,7 @@ export const fetchOrdersStart = () => {
 
 export const fetchOrders = () => {
     return dispatch => {
-        
+
         dispatch(fetchOrdersStart());
         axios.get('/orders.json')
             .then(response => {
@@ -92,4 +92,35 @@ export const fetchOrders = () => {
                 dispatch(fetchOrdersFail(error));
             });
     };
+};
+
+export const deleteOrderSuccess = (updatedOrders) => {
+    return {
+        type: actionTypes.DELETE_ORDER_SUCCESS,
+        orders: updatedOrders
+    };
+};
+
+export const deleteOrderFail = (error) => {
+    return {
+        type: actionTypes.DELETE_ORDER_FAIL,
+        error: error
+    };
+};
+
+export const deleteOrder = (id, allOrders) => {
+
+    const updatedOrders = allOrders.filter(order => order.id !== id);
+
+    return dispatch => {
+        axios.put('/orders.json', updatedOrders)
+            .then(response => {
+
+                dispatch(deleteOrderSuccess(updatedOrders));
+            })
+            .catch(error => {
+
+                dispatch(deleteOrderFail(error));
+            });
+    }
 };

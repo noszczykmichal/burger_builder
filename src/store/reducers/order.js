@@ -57,6 +57,16 @@ const orderReducer = (state = initialState, action) => {
                             loading: false
                      };
 
+              case actionTypes.DELETE_ORDER_SUCCESS:
+                     return {
+                            ...state,
+                            orders: action.orders
+                     };
+              case actionTypes.DELETE_ORDER_FAIL:
+                     return{
+                            ...state
+                     }
+
               default:
                      return state;
        }
