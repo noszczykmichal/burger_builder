@@ -1,5 +1,6 @@
 import React from 'react';
 import classes from './Order.module.css';
+import Button from '../UI/Button/Button';
 
 const order = (props) => {
     const ingredients = [];
@@ -23,6 +24,7 @@ const order = (props) => {
         <div className={classes.Order}>
             <p>Ingredient: {ingredientOutput}</p>
             <p>Price:<strong>USD {props.price}</strong></p>
+            <Button btnType='Danger' children='DELETE' clicked={props.onButtonClick}></Button>
         </div>
     );
 };
