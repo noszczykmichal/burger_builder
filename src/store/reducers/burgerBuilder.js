@@ -17,23 +17,28 @@ const reducer = (state = initialState, action) => {
 
     switch (action.type) {
         case actionTypes.ADD_INGREDIENT:
+            let addPrice = (state.totalPrice + INGREDIENT_PRICES[action.ingredientName]).toFixed(2);
+            addPrice = Number(addPrice);
+
             return {
                 ...state,//copying the old state
                 ingredients: {
                     ...state.ingredients,
                     [action.ingredientName]: state.ingredients[action.ingredientName] + 1,//adding the new count of the given ingredient
                 },
-                totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]//recalculating the totalPrice
+                totalPrice: addPrice//recalculating the totalPrice
             };
 
         case actionTypes.REMOVE_INGREDIENT:
+            let removePrice = (state.totalPrice - INGREDIENT_PRICES[action.ingredientName]).toFixed(2);
+            removePrice = Number(removePrice);
             return {
                 ...state,
                 ingredients: {
                     ...state.ingredients,
                     [action.ingredientName]: state.ingredients[action.ingredientName] - 1
                 },
-                totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName]
+                totalPrice: removePrice
             };
 
         case actionTypes.SET_INGREDIENTS:
