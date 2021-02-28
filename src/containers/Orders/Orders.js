@@ -24,7 +24,7 @@ class Orders extends Component {
                     key={order.id}
                     ingredients={order.ingredients}
                     price={order.price} 
-                    onButtonClick={()=>this.props.onDeleteOrder(order.id, this.props.orders)}/>
+                    onButtonClick={()=>this.props.onDeleteOrder(order.id)}/>
             ))
         };
 
@@ -46,7 +46,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onFetchOrders: () => dispatch(actions.fetchOrders()),
-        onDeleteOrder: (id, allOrders)=> dispatch(actions.deleteOrder(id, allOrders))
+        onDeleteOrder: (id)=> dispatch(actions.deleteOrder(id))
     };
 };
 
