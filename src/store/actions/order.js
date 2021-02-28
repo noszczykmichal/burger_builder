@@ -2,6 +2,9 @@ import * as actionTypes from './actionTypes';
 import axios from '../../axios-orders';
 
 
+let currentOrders = null;
+
+
 export const purchaseBurgerSuccess = (id, orderData) => {
     return {
         type: actionTypes.PURCHASE_BURGER_SUCCESS,
@@ -63,7 +66,7 @@ export const fetchOrdersFail = (error) => {
 export const fetchOrdersStart = () => {
     return {
         type: actionTypes.FETCH_ORDERS_START
-    }
+    };
 };
 
 export const fetchOrders = () => {
@@ -72,15 +75,15 @@ export const fetchOrders = () => {
         dispatch(fetchOrdersStart());
         axios.get('/orders.json')
             .then(response => {
-
-                // console.log('response.data: ', response.data);
+                currentOrders = response.data; //response.data saved globally for the future use in the deleteOrder action creator
+                // console.log(currentOrders);
                 const fetchedOrders = [];
 
-                for (let key in response.data) {
+                for (let key in currentOrders) {
                     // console.log(response.data[key]);
 
                     fetchedOrders.push({
-                        ...response.data[key],
+                        ...currentOrders[key],
                         id: key
                     });
                 }
@@ -108,12 +111,28 @@ export const deleteOrderFail = (error) => {
     };
 };
 
-export const deleteOrder = (id, allOrders) => {
+export const deleteOrder = (id) => {
 
-    const updatedOrders = allOrders.filter(order => order.id !== id);
+    for(let key in currentOrders){//after deleting the order that was send through the action the updated 'currentOrders' is send with axios to the database
+        if(key===id){
+            delete currentOrders[key];
+        }
+    }
+
+    const updatedOrders=[];
+
+    for(let key in currentOrders){ // in the for loop the orders from 'currentOrders' are pushed to the array updatedOrders; later they will be passed through deleteOrderSuccess action to update the orders saved in the store
+        
+        updatedOrders.push({
+            ...currentOrders[key],
+            id: key
+        })
+    }
+    // console.log('allOrders: ', allOrders)
+    // console.log('updatedOrders: ', updatedOrders)
 
     return dispatch => {
-        axios.put('/orders.json', updatedOrders)
+        axios.put('/orders.json', currentOrders) 
             .then(response => {
 
                 dispatch(deleteOrderSuccess(updatedOrders));
@@ -122,5 +141,5 @@ export const deleteOrder = (id, allOrders) => {
 
                 dispatch(deleteOrderFail(error));
             });
-    }
+    };
 };
