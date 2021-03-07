@@ -30,7 +30,7 @@ const addIngredient = (state, action) => {
 const removeIngredient = (state, action) => {
     const updatedIng = { [action.ingredientName]: state.ingredients[action.ingredientName] - 1 };
     const updatedIngs = updateObject(state.ingredients, updatedIng);
-    let subtractPrice = (state.totalPrice + INGREDIENT_PRICES[action.ingredientName]).toFixed(2);
+    let subtractPrice = (state.totalPrice - INGREDIENT_PRICES[action.ingredientName]).toFixed(2);
     subtractPrice = Number(subtractPrice);
     const updatedSt = {
         ingredients: updatedIngs,
