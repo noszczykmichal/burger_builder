@@ -26,11 +26,11 @@ export const purchaseBurgerStart = () => {
     };
 };
 
-export const purchaseBurger = (orderData) => {
+export const purchaseBurger = (orderData, token) => {
     return dispatch => {
         dispatch(purchaseBurgerStart());
 
-        axios.post('/orders.json', orderData)
+        axios.post('/orders.json?auth=' + token, orderData)
             .then(response => {
 
                 dispatch(purchaseBurgerSuccess(response.data.name, orderData));
@@ -69,11 +69,11 @@ export const fetchOrdersStart = () => {
     };
 };
 
-export const fetchOrders = () => {
+export const fetchOrders = (token) => {
     return dispatch => {
 
         dispatch(fetchOrdersStart());
-        axios.get('/orders.json')
+        axios.get('/orders.json?auth=' + token)
             .then(response => {
                 currentOrders = response.data; //response.data saved globally for the future use in the deleteOrder action creator
                 // console.log(currentOrders);
@@ -111,18 +111,18 @@ export const deleteOrderFail = (error) => {
     };
 };
 
-export const deleteOrder = (id) => {
+export const deleteOrder = (id, token) => {
 
-    for(let key in currentOrders){//after deleting the order that was send through the action the updated 'currentOrders' is send with axios to the database
-        if(key===id){
+    for (let key in currentOrders) {//after deleting the order that was send through the action the updated 'currentOrders' is send with axios to the database
+        if (key === id) {
             delete currentOrders[key];
         }
     }
 
-    const updatedOrders=[];
+    const updatedOrders = [];
 
-    for(let key in currentOrders){ // in the for loop the orders from 'currentOrders' are pushed to the array updatedOrders; later they will be passed through deleteOrderSuccess action to update the orders saved in the store
-        
+    for (let key in currentOrders) { // in the for loop the orders from 'currentOrders' are pushed to the array updatedOrders; later they will be passed through deleteOrderSuccess action to update the orders saved in the store
+
         updatedOrders.push({
             ...currentOrders[key],
             id: key
@@ -132,7 +132,7 @@ export const deleteOrder = (id) => {
     // console.log('updatedOrders: ', updatedOrders)
 
     return dispatch => {
-        axios.put('/orders.json', currentOrders) 
+        axios.put('/orders.json?auth=' + token, currentOrders)
             .then(response => {
 
                 dispatch(deleteOrderSuccess(updatedOrders));
