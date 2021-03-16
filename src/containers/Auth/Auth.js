@@ -140,7 +140,9 @@ class Auth extends Component {
             );
         }
 
-        if (this.props.isAuthenticated) {
+        if (this.props.building && this.props.isAuthenticated) {// redirecting the users to the checkout container if they sign-in/ sign-up and while they've been previously in the middle of building their burger
+            authRedirect = <Redirect to="/checkout" />;
+        }else if(this.props.isAuthenticated){//redirecting to the BurgerBuilder container if the user just signs in/ signs up
             authRedirect = <Redirect to="/" />;
         }
 
@@ -164,7 +166,8 @@ const mapStateToProps = state => {
     return {
         loading: state.auth.loading,
         error: state.auth.error,
-        isAuthenticated: state.auth.token !== null
+        isAuthenticated: state.auth.token !== null,
+        building: state.burgerBuilder.building
     };
 };
 
