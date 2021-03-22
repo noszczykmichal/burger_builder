@@ -1,10 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios-orders';
 
-
-let currentOrders = null;
-
-
 export const purchaseBurgerSuccess = (id, orderData) => {
     return {
         type: actionTypes.PURCHASE_BURGER_SUCCESS,
@@ -72,10 +68,10 @@ export const fetchOrdersStart = () => {
 export const fetchOrders = (token, userId) => {
     return dispatch => {
         dispatch(fetchOrdersStart());
-        const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId+'"';
+        const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
         axios.get('/orders.json' + queryParams)
             .then(response => {
-                currentOrders = response.data; //response.data saved globally for the future use in the deleteOrder action creator
+                let currentOrders = response.data;
                 // console.log(currentOrders);
                 const fetchedOrders = [];
 
@@ -96,10 +92,9 @@ export const fetchOrders = (token, userId) => {
     };
 };
 
-export const deleteOrderSuccess = (updatedOrders) => {
+export const deleteOrderSuccess = () => {
     return {
         type: actionTypes.DELETE_ORDER_SUCCESS,
-        orders: updatedOrders
     };
 };
 
@@ -110,35 +105,16 @@ export const deleteOrderFail = (error) => {
     };
 };
 
-export const deleteOrder = (id, token) => {
-
-    for (let key in currentOrders) {//after deleting the order that was send through the action the updated 'currentOrders' is send with axios to the database
-        if (key === id) {
-            delete currentOrders[key];
-        }
-    }
-
-    const updatedOrders = [];
-
-    for (let key in currentOrders) { // in the for loop the orders from 'currentOrders' are pushed to the array updatedOrders; later they will be passed through deleteOrderSuccess action to update the orders saved in the store
-
-        updatedOrders.push({
-            ...currentOrders[key],
-            id: key
-        })
-    }
-    // console.log('allOrders: ', allOrders)
-    // console.log('updatedOrders: ', updatedOrders)
-
+export const deleteOrder = (id, token, userId) => {
     return dispatch => {
-        axios.put('/orders.json?auth=' + token, currentOrders)
+        const deletedOrder = {};
+        axios.put('orders/' + id + '.json?auth=' + token, deletedOrder)//replacing the order to be deleted with the empty object
             .then(response => {
-
-                dispatch(deleteOrderSuccess(updatedOrders));
+                dispatch(deleteOrderSuccess());
+                dispatch(fetchOrders(token, userId));
             })
             .catch(error => {
-
                 dispatch(deleteOrderFail(error));
-            });
+            })
     };
 };

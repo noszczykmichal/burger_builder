@@ -24,7 +24,7 @@ class Orders extends Component {
                     key={order.id}
                     ingredients={order.ingredients}
                     price={order.price} 
-                    onButtonClick={()=>this.props.onDeleteOrder(order.id, this.props.token)}/>
+                    onButtonClick={()=>this.props.onDeleteOrder(order.id, this.props.token, this.props.userId)}/>
             ))
         };
 
@@ -49,7 +49,7 @@ const mapDispatchToProps = dispatch => {
     return {//passing the token to the action creators so that it can be passed in the request; 
         //thanks to that the permission to read and write in the database is granted
         onFetchOrders: (token, userId) => dispatch(actions.fetchOrders(token, userId)),
-        onDeleteOrder: (id, token)=> dispatch(actions.deleteOrder(id, token))
+        onDeleteOrder: (id, token, userId)=> dispatch(actions.deleteOrder(id, token, userId))
     };
 };
 

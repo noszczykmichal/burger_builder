@@ -44,7 +44,7 @@ const fetchOrdersFail = (state, action) => {
 };
 
 const deleteOrderSuccess = (state, action) => {
-       return updateObject(state, { orders: action.orders });
+       return updateObject(state);
 };
 
 const deleteOrderFail = (state, action) => {
