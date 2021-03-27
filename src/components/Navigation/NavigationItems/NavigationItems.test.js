@@ -8,16 +8,25 @@ import NavigationItem from './NavigationItem/NavigationItem';
 
 configure({ adapter: new Adapter() });
 
-describe('<NavigationItems /> without passing props', () => {
+describe('<NavigationItems />', () => {
+    let wrapper;
+
+    beforeEach(() => {
+        wrapper = shallow(<NavigationItems />)
+    });
+
     it('should render two <NavigationItem /> elements if not authenticated', () => {
-        const wrapper = shallow(<NavigationItems/>);
         expect(wrapper.find(NavigationItem)).toHaveLength(2);
     });
-});
 
-describe('<NavigationItems /> with isAuthenticated props', ()=>{
     it('should render three <NavigationItem /> elements if authenticated', () => {
-        const wrapper = shallow(<NavigationItems isAuthenticated/>);
+        // wrapper= shallow(<NavigationItems isAuthenticated/>)
+        wrapper.setProps({isAuthenticated: true});
         expect(wrapper.find(NavigationItem)).toHaveLength(3);
     });
-})
+
+    it('should render one <NavigationItem> element if authenticated with inner text "Logout" and link to "/logout"', () => {
+        wrapper.setProps({isAuthenticated: true});
+        expect(wrapper.contains(<NavigationItem link="/logout">Logout</NavigationItem>)).toEqual(true);
+    });
+});
