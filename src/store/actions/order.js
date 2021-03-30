@@ -118,3 +118,9 @@ export const deleteOrder = (id, token, userId) => {
             })
     };
 };
+
+export const clearOrdersAndPurchased = () => {
+    return {
+        type: actionTypes.CLEAR_ORDERS_AND_PURCHASED
+    };
+};

@@ -9,7 +9,8 @@ export{
     purchaseInit,
     fetchOrdersStart,
     fetchOrders,
-    deleteOrder
+    deleteOrder,
+    clearOrdersAndPurchased
 } from './order';
 
 export{

@@ -51,6 +51,13 @@ const deleteOrderFail = (state, action) => {
        return updateObject(state, { error: action.error });
 };
 
+const clearOrdersAndPurchased=(state, action)=>{
+       return updateObject(state, {
+              orders: [],
+              purchased: false
+       });
+};
+
 const orderReducer = (state = initialState, action) => {
        switch (action.type) {
               case actionTypes.PURCHASE_INIT: return purchaseInit(state, action);
@@ -62,6 +69,7 @@ const orderReducer = (state = initialState, action) => {
               case actionTypes.FETCH_ORDERS_FAIL: return fetchOrdersFail(state, action);
               case actionTypes.DELETE_ORDER_SUCCESS: return deleteOrderSuccess(state, action);
               case actionTypes.DELETE_ORDER_FAIL: return deleteOrderFail(state, action);
+              case actionTypes.CLEAR_ORDERS_AND_PURCHASED: return clearOrdersAndPurchased(state, action);
               default: return state;
        }
 };
